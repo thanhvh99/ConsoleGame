@@ -1,2 +1,2 @@
 # ConsoleGame
-simple console game using c++
+Simple console game using c++
