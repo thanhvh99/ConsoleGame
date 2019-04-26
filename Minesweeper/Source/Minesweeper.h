@@ -28,40 +28,76 @@ private:
     Tile** tiles;
 
 public:
-    //constructor
+    /*
+     *  constructor
+     */
     Minesweeper();
     ~Minesweeper();
 
-    //getter
+
+    /*
+     *  getter
+     */
     int getCol();
     int getRow();
     int getMine();
     int getValue(int x, int y);
-    int isCovered(int x, int y);
-    int isFlagged(int x, int y);
-    bool isFinish();
+    bool isCovered(int x, int y);
+    bool isFlagged(int x, int y);
+    bool isFinish(); //  return true if the board is completed otherwise return false;
 
-    //setter
+
+    /*
+     *  setter
+     */
     void toggleFlag(int x, int y);
 
-    //function
+
+    /*
+     *  function
+     */
+    //  save new values of board and initialize tiles
     void createBoard(int cols, int rows, int mines);
-    bool selectCoveredTile(int x, int y);
-    bool selectUncoveredTile(int x, int y);
+
+    //  create a solvable board
     void setupBoard(int x, int y);
-    bool minesweeperSolver(int x, int y);
-    bool minesweeperAdvanceSolver(bool** finish);
+
+    //  keep mines position, set flagged and covered of all tiles to default
     void resetBoard();
 
-    void increaseValueTilesSurround(int x, int y);
-    int getCoveredTilesSurround(int x, int y);
-    int getFlagsSurround(int x, int y);
-    void flagUncoveredTilesSurround(int x, int y);
-    bool uncoverTilesSurround(int x, int y);
+    //  select covered tile at position (x, y); return true if no mine is uncovered otherwise return false
+    bool selectCoveredTile(int x, int y);
+
+    //  select all covered tiles around tile at posion (x, y); return true if no mine is uncovered otherwise return false
+    bool selectUncoveredTile(int x, int y);
 
 private:
-    //function
-    void countPossibleWays(vector<int> &vectorX, vector<int> &vectorY, int undetectMines, int* &frequency, int &count, int start = 0);
+    /*
+     *  function
+     */
+    //  use to solve board; return true if successfully solved otherwise return false;
+    bool solve(int x, int y);
+
+    //  detect mines that are hard to find; return true if find at least one otherwise return false; no guessing - only logic
+    bool minesFinder(bool** finish);
+
+    //  increase value of 8 tiles surround tile at position (x, y)
+    void increaseValueTilesSurround(int x, int y);
+
+    //  return the number of covered tiles surround tile at position (x, y)
+    int getCoveredTilesSurround(int x, int y);
+
+    //  return the number of flags surround tile at position (x, y)
+    int getFlagsSurround(int x, int y);
+
+    //  flag all covered tiles surround tile at position (x, y)
+    void flagCoveredTilesSurround(int x, int y);
+
+    //  uncover all covered tiles surround tile at position (x, y); return true if no mine is uncovered otherwise return false
+    bool uncoverTilesSurround(int x, int y);
+
+    //  find all possible ways to put number of undetected mines into all tiles with position in 2 vectors
+    void countPossibleWays(vector<int> &vectorX, vector<int> &vectorY, int undetectedMines, int* &frequency, int &count, int start = 0);
 
 };
 

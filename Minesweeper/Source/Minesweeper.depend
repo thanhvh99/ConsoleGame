@@ -1,0 +1,40 @@
+# depslib dependency file v1.0
+1556288526 source:d:\github\consolegame\minesweeper\source\console.cpp
+	<windows.h>
+	<iostream>
+	"Console.h"
+
+1556288526 d:\github\consolegame\minesweeper\source\console.h
+
+1556288526 source:d:\github\consolegame\minesweeper\source\tile.cpp
+	"Tile.h"
+
+1556288526 d:\github\consolegame\minesweeper\source\tile.h
+
+1556292111 source:d:\github\consolegame\minesweeper\source\minesweeper.cpp
+	"Minesweeper.h"
+	"Console.h"
+	<iostream>
+	<cstdlib>
+	<time.h>
+
+1556292111 d:\github\consolegame\minesweeper\source\minesweeper.h
+	<vector>
+	"Tile.h"
+
+1556291018 source:d:\github\consolegame\minesweeper\source\printer.cpp
+	"Printer.h"
+	"Console.h"
+	<iostream>
+
+1556291018 d:\github\consolegame\minesweeper\source\printer.h
+	"Minesweeper.h"
+
+1556288526 source:d:\github\consolegame\minesweeper\source\main.cpp
+	"Console.h"
+	"Minesweeper.h"
+	"Printer.h"
+	<windows.h>
+	<iostream>
+	<conio.h>
+

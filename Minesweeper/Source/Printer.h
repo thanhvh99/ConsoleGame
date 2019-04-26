@@ -20,11 +20,6 @@ public:
     void printBoard(bool _2Line = false, bool printAll = false);
     void printValue(int x, int y);
     void printValue();
-
-    void printFlagsSurround(bool _2Line = false);           //debug
-    void printCoveredTilesSurround(bool _2Line = false);    //debug
-    void printCovered(bool _2Line = false);                 //debug
-    void printFlagged(bool _2Line = false);                 //debug
 };
 
 #endif // PRINTER_H

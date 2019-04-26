@@ -23,8 +23,8 @@ int Minesweeper::getCol() {return col;}
 int Minesweeper::getRow() {return row;}
 int Minesweeper::getMine() {return mine;}
 int Minesweeper::getValue(int x, int y) {return tiles[y][x].getValue();}
-int Minesweeper::isCovered(int x, int y) {return tiles[y][x].isCovered();}
-int Minesweeper::isFlagged(int x, int y) {return tiles[y][x].isFlagged();}
+bool Minesweeper::isCovered(int x, int y) {return tiles[y][x].isCovered();}
+bool Minesweeper::isFlagged(int x, int y) {return tiles[y][x].isFlagged();}
 bool Minesweeper::isFinish()
 {
     int count = 0;
@@ -126,7 +126,7 @@ void Minesweeper::setupBoard(int x, int y)
             tiles[_y][_x].setMine();
             increaseValueTilesSurround(_x, _y);
         }
-    } while (!minesweeperSolver(x, y));
+    } while (!solve(x, y));
 
     gotoXY(0, row * 2 + 4);
     cout << "Failed generate: " << count;
@@ -189,7 +189,7 @@ void Minesweeper::increaseValueTilesSurround(int x, int y)
     }
 }
 
-void Minesweeper::flagUncoveredTilesSurround(int x, int y)
+void Minesweeper::flagCoveredTilesSurround(int x, int y)
 {
     for (int i = -1; i <= 1; i++)
     {
@@ -230,7 +230,7 @@ bool Minesweeper::uncoverTilesSurround(int x, int y)
     return rightFlag;
 }
 
-bool Minesweeper::minesweeperSolver(int x, int y)
+bool Minesweeper::solve(int x, int y)
 {
     selectCoveredTile(x, y);
     bool action = true;
@@ -271,14 +271,14 @@ bool Minesweeper::minesweeperSolver(int x, int y)
                 // then flag all covered tiles
                 else if (flags + coveredTiles == tiles[y][x].getValue())
                 {
-                    flagUncoveredTilesSurround(x, y);
+                    flagCoveredTilesSurround(x, y);
                     finish[y][x] = true;
                     action = true;
                 }
             }
         }
         // if cant find any new flag with simple way, try with advance one
-        if (!action && minesweeperAdvanceSolver(finish))
+        if (!action && minesFinder(finish))
         {
            action = true;
         }
@@ -301,7 +301,7 @@ bool Minesweeper::minesweeperSolver(int x, int y)
     return count == mine;
 }
 
-bool Minesweeper::minesweeperAdvanceSolver(bool** finish)
+bool Minesweeper::minesFinder(bool** finish)
 {
     bool action = false;
     for (int y = 0; y < row; y++)
@@ -309,8 +309,8 @@ bool Minesweeper::minesweeperAdvanceSolver(bool** finish)
         for (int x = 0; x < col; x++)
         {
             if (finish[y][x] || tiles[y][x].isCovered()) continue;
-            int undetectMines = tiles[y][x].getValue() - getFlagsSurround(x, y);
-            if (undetectMines <= 1) continue;
+            int undetectedMines = tiles[y][x].getValue() - getFlagsSurround(x, y);
+            if (undetectedMines <= 1) continue;
             //get position of covered tiles surround
             vector<int> vectorX;
             vector<int> vectorY;
@@ -329,7 +329,7 @@ bool Minesweeper::minesweeperAdvanceSolver(bool** finish)
             }
             int* frequency = new int[vectorX.size()]();
             int count = 0;
-            countPossibleWays(vectorX, vectorY, undetectMines, frequency, count);
+            countPossibleWays(vectorX, vectorY, undetectedMines, frequency, count);
             for (int i = vectorX.size() - 1; i >= 0; i--)
             {
                 if (isFlagged(vectorX[i], vectorY[i]))
@@ -350,9 +350,9 @@ bool Minesweeper::minesweeperAdvanceSolver(bool** finish)
     return action;
 }
 
-void Minesweeper::countPossibleWays(vector<int> &vectorX, vector<int> &vectorY, int undetectMines, int* &frequency, int &count, int start)
+void Minesweeper::countPossibleWays(vector<int> &vectorX, vector<int> &vectorY, int undetectedMines, int* &frequency, int &count, int start)
 {
-    if (undetectMines == 0)
+    if (undetectedMines == 0)
     {
         bool accept = true;
         for (int i = vectorX.size() - 1; i >= 0; i--)
@@ -391,11 +391,11 @@ void Minesweeper::countPossibleWays(vector<int> &vectorX, vector<int> &vectorY, 
         }
         return;
     }
-    int end = vectorX.size() - undetectMines;
+    int end = vectorX.size() - undetectedMines;
     for (int index = start; index <= end; index++)
     {
         toggleFlag(vectorX[index], vectorY[index]);
-        countPossibleWays(vectorX, vectorY, undetectMines - 1, frequency, count, index + 1);
+        countPossibleWays(vectorX, vectorY, undetectedMines - 1, frequency, count, index + 1);
         toggleFlag(vectorX[index], vectorY[index]);
     }
 }
