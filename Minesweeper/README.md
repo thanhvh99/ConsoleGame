@@ -10,14 +10,13 @@ Dò mìn là trò chơi giải đố một người chơi đơn giản. Nhiệm 
 - Nếu mở ô có bom thì trò chơi kết thúc.
 
 ### Điều khiển
-- Di chuyển
-  - A,W,D,S hoặc 4 phím mũi tên để di chuyển.
-  - Enter/Space:
-    - Ô đã mở (Ô hiển thị số): Nếu số cờ xung quanh ô lớn hơn hoặc bằng số trong ô thì mở các ô chưa mở xung quanh.
-    - Ô chưa mở: Mở ô.
-  - F:
-    - Ô chưa mở: Gắn cờ cho ô đó.
-    - Ô đã được gắn cờ: Bỏ cờ khỏi ô đó.
+- A,W,D,S hoặc 4 phím mũi tên để di chuyển.
+- Enter/Space để chọn
+  - Ô đã mở (Ô hiển thị số): Nếu số cờ xung quanh ô lớn hơn hoặc bằng số trong ô thì mở các ô chưa mở xung quanh.
+  - Ô chưa mở: Mở ô.
+- F để gắn cờ
+  - Ô chưa mở: Gắn cờ cho ô đó.
+  - Ô đã được gắn cờ: Bỏ cờ khỏi ô đó.
     
 ### Một số hình ảnh của trò chơi
 ![My image](Image.png)
