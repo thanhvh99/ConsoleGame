@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <iostream>
 #include <conio.h>
+#include <time.h>
 
 #define UP_ARROW 72
 #define DOWN_ARROW 80
@@ -96,9 +97,12 @@ void playState()
     int mine = difficultyData[difficulty][2];
     bool firstPick = true;
     int status = 0;
-    cout << "Mines: " << mine;
+    time_t now = time(NULL);
+    long _time = 0;
+    cout << "Mine: " << mine << endl;
+    cout << "Time: ";
+    cout << _time / 60 << ":" << _time % 60;
     printer.printBoard();
-
     gotoXY(2, 3);
 
     while (status == 0)
@@ -124,6 +128,7 @@ void playState()
                 case SPACE:
                     if (firstPick)
                     {
+                        now = time(NULL);
                         minesweeper.setupBoard(x, y);
                         firstPick = false;
                     }
@@ -160,7 +165,7 @@ void playState()
                             mine++;
                         }
                     }
-                    gotoXY(7, 0);
+                    gotoXY(6, 0);
                     cout << mine << "   ";
                     printer.printValue(x, y);
                     if (mine == 0 && minesweeper.isFinish())
@@ -174,9 +179,17 @@ void playState()
             }
             gotoXY(2 + x * 4, 3 + y * 2);
         }
+        if (!firstPick && time(NULL) > now + _time)
+        {
+            _time = time(NULL) - now;
+            gotoXY(6, 1);
+            cout << _time / 60 << ":" << _time % 60 << "   ";
+            gotoXY(2 + x * 4, 3 + y * 2);
+        }
         //  loop delay
         Sleep(10);
     }
+
     printer.printBoard(true);
     gotoXY(0, row * 2 + 5);
     if (status == 1)
@@ -187,6 +200,7 @@ void playState()
     {
         cout << "You lose.\n";
     }
+    Sleep(3000);
     system("pause");
 }
 

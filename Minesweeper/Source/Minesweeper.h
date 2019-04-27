@@ -62,8 +62,6 @@ public:
     //  create a solvable board
     void setupBoard(int x, int y);
 
-
-
     //  select covered tile at position (x, y); return true if no mine is uncovered otherwise return false
     bool selectCoveredTile(int x, int y);
 
