@@ -32,11 +32,11 @@ bool Minesweeper::isFinish()
     {
         for (int j = 0; j < col; j++)
         {
-            if (tiles[i][j].isFlagged() || !tiles[i][j].isCovered())
+            if (tiles[i][j].isFlagged() && tiles[i][j].isMine())
                 count++;
         }
     }
-    return count == row * col;
+    return count == mine;
 }
 
 //setter
@@ -46,7 +46,7 @@ void Minesweeper::toggleFlag(int x, int y)
 }
 
 //function
-void Minesweeper::createBoard(int cols, int rows, int mines)
+void Minesweeper::createBoard(const int* difficulty)
 {
     if (tiles != NULL)
     {
@@ -57,9 +57,9 @@ void Minesweeper::createBoard(int cols, int rows, int mines)
         delete tiles;
     }
 
-    col = cols;
-    row = rows;
-    mine = mines;
+    col = difficulty[0];
+    row = difficulty[1];
+    mine = difficulty[2];
 
     tiles = new Tile*[row];
     for (int i = 0; i < row; i++)
@@ -105,17 +105,9 @@ void Minesweeper::setupBoard(int x, int y)
 {
     int _y, _x;
     srand(time(NULL));
-    int count = -1;
     do
     {
-        count++;
-        for (int i = 0; i < row; i++)
-        {
-            for (int j = 0; j < col; j++)
-            {
-                tiles[i][j].resetAll();
-            }
-        }
+        resetAll();
         for (int i = 0; i < mine; i++)
         {
             do
@@ -127,17 +119,7 @@ void Minesweeper::setupBoard(int x, int y)
             increaseValueTilesSurround(_x, _y);
         }
     } while (!solve(x, y));
-
-    gotoXY(0, row * 2 + 4);
-    cout << "Failed generate: " << count;
-
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < col; j++)
-        {
-            tiles[i][j].reset();
-        }
-    }
+    resetBoard();
 }
 
 int Minesweeper::getCoveredTilesSurround(int x, int y)
@@ -203,6 +185,17 @@ void Minesweeper::flagCoveredTilesSurround(int x, int y)
 }
 
 void Minesweeper::resetBoard()
+{
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            tiles[i][j].reset();
+        }
+    }
+}
+
+void Minesweeper::resetAll()
 {
     for (int i = 0; i < row; i++)
     {

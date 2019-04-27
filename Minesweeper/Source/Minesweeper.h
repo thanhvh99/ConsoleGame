@@ -57,13 +57,12 @@ public:
      *  function
      */
     //  save new values of board and initialize tiles
-    void createBoard(int cols, int rows, int mines);
+    void createBoard(const int* difficulty);
 
     //  create a solvable board
     void setupBoard(int x, int y);
 
-    //  keep mines position, set flagged and covered of all tiles to default
-    void resetBoard();
+
 
     //  select covered tile at position (x, y); return true if no mine is uncovered otherwise return false
     bool selectCoveredTile(int x, int y);
@@ -75,6 +74,12 @@ private:
     /*
      *  function
      */
+    //  keep mines position, set flagged and covered of all tiles to default
+    void resetBoard();
+
+    //  turn board to default
+    void resetAll();
+
     //  use to solve board; return true if successfully solved otherwise return false;
     bool solve(int x, int y);
 
